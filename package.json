@@ -1,0 +1,25 @@
+{
+  "name": "corona-telegram-bot",
+  "version": "1.0.0",
+  "description": "- read daily numbers - send daily message to user - user should be able to register - user should be able to set location",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felixwaage/corona-telegram-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felixwaage/corona-telegram-bot/issues"
+  },
+  "homepage": "https://github.com/felixwaage/corona-telegram-bot#readme",
+  "dependencies": {
+    "cron": "^1.8.2",
+    "node-persist": "^3.1.0",
+    "node-telegram-bot-api": "^0.52.0",
+    "request": "^2.88.2"
+  }
+}
