@@ -19,7 +19,7 @@ async function main() {
   await storage.init();
   console.log("Server is now running!");
   checkJob.start();
-  sendCoronaMessages();
+  //sendCoronaMessages();
 }
 
 // receive messages
