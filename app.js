@@ -5,7 +5,9 @@ const cron = require("cron");
 
 const token = "1774101462:AAFYCaP1E1ACbCeNwd_LwdznBSWSlUrREnk";
 
-const bot = new telegramAPI(token, { polling: true });
+const bot = new telegramAPI(token, {
+  polling: true
+});
 
 var checkJob = new cron.CronJob("0 0 9 * * *", () => {
   console.log("Scheduled Job Running...");
@@ -29,6 +31,12 @@ bot.on("message", (msg) => {
   switch (msg.text) {
     case "/register":
       registerUser(chatId);
+      break;
+    case "/start":
+      registerUser(chatId);
+      break;
+    case "/sendMsg":
+      sendCoronaMessages();
       break;
     default:
       // send help message
@@ -58,7 +66,9 @@ async function registerUser(chatId) {
   var oUsers = await storage.getItem("users");
 
   if (typeof oUsers === "undefined") {
-    await storage.setItem("users", { users: [] });
+    await storage.setItem("users", {
+      users: []
+    });
     oUsers = await storage.getItem("users");
   }
 
@@ -72,7 +82,9 @@ async function registerUser(chatId) {
   });
 
   if (!bUserIsPresent) {
-    oUsers.users.push({ chatId: chatId });
+    oUsers.users.push({
+      chatId: chatId
+    });
     await storage.setItem("users", oUsers);
     bot.sendMessage(
       chatId,
