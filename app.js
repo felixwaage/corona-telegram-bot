@@ -2,24 +2,26 @@ const telegramAPI = require("node-telegram-bot-api");
 const Request = require("request");
 const storage = require("node-persist");
 const cron = require("cron");
+const log = require("simple-node-logger").createSimpleLogger("project.log");
 
 const token = "1774101462:AAFYCaP1E1ACbCeNwd_LwdznBSWSlUrREnk";
 
 const bot = new telegramAPI(token, {
-  polling: true
+  polling: true,
 });
 
 var checkJob = new cron.CronJob("0 0 9 * * *", () => {
-  console.log("Scheduled Job Running...");
+  log.info("Scheduled Job Running...");
 });
 
 main();
 
 async function main() {
-  console.log("Welcome to Corona Telegram Bot by Felix");
-  console.log("Init Storage...");
+  log.info("Welcome to Corona Telegram Bot by Felix");
+  //console.log("Welcome to Corona Telegram Bot by Felix");
+  log.info("Init Storage...");
   await storage.init();
-  console.log("Server is now running!");
+  log.info("Server is now running!");
   checkJob.start();
   //sendCoronaMessages();
 }
@@ -28,6 +30,7 @@ async function main() {
 
 bot.on("message", (msg) => {
   const chatId = msg.chat.id;
+  log.info("[Msg]: " + msg.text + " (" + chatId + ")");
   switch (msg.text) {
     case "/register":
       registerUser(chatId);
@@ -56,7 +59,14 @@ async function sendCoronaMessages() {
     " neue Corona-Infektionen gemeldet.";
 
   oUsers.users.forEach((user) => {
-    bot.sendMessage(user.chatId, msg);
+    try {
+      log.info("Send Message: " + msg + " (" + user.chatId + ")");
+      bot.sendMessage(user.chatId, msg);
+      log.info("Success!");
+    } catch (error) {
+      log.error("Error: Sending Corona-Message failed!");
+      log.error(error);
+    }
   });
 }
 
@@ -67,7 +77,7 @@ async function registerUser(chatId) {
 
   if (typeof oUsers === "undefined") {
     await storage.setItem("users", {
-      users: []
+      users: [],
     });
     oUsers = await storage.getItem("users");
   }
@@ -83,7 +93,7 @@ async function registerUser(chatId) {
 
   if (!bUserIsPresent) {
     oUsers.users.push({
-      chatId: chatId
+      chatId: chatId,
     });
     await storage.setItem("users", oUsers);
     bot.sendMessage(
