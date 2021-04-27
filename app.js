@@ -116,3 +116,7 @@ function getCoronaData() {
     });
   });
 }
+
+process.on("uncaughtException", function (err) {
+  log.info("Caught exception: " + err);
+});
